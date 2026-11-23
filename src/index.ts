@@ -2,6 +2,7 @@ import { McpAgent } from "agents/mcp";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import OAuthProvider from "@cloudflare/workers-oauth-provider";
+import { garminGet, garminStatus } from "./garmin";
 
 const BASE = "https://intervals.icu/api/v1";
 
@@ -98,6 +99,37 @@ export class MyMCP extends McpAgent {
           body: JSON.stringify(body),
         });
         return { content: [{ type: "text", text: JSON.stringify(data) }] };
+      },
+    );
+
+    // --- Garmin Connect Personal API (read-only) ---------------------------
+
+    this.server.tool(
+      "garminStatus",
+      {},
+      async () => {
+        try {
+          const data = await garminStatus(this.env as any);
+          return { content: [{ type: "text", text: JSON.stringify(data) }] };
+        } catch (e) {
+          return { isError: true, content: [{ type: "text", text: String(e instanceof Error ? e.message : e) }] };
+        }
+      },
+    );
+
+    this.server.tool(
+      "garminGet",
+      {
+        url: z.string().describe("Full https URL of a Garmin Personal API GET endpoint (garmin.com hosts only)"),
+        maxChars: z.number().optional().describe("Truncate the response body, default 40000"),
+      },
+      async ({ url, maxChars }) => {
+        try {
+          const data = await garminGet(this.env as any, url, maxChars);
+          return { content: [{ type: "text", text: JSON.stringify(data) }] };
+        } catch (e) {
+          return { isError: true, content: [{ type: "text", text: String(e instanceof Error ? e.message : e) }] };
+        }
       },
     );
 

@@ -10,3 +10,7 @@ INTERVALS_ATHLETE_ID=i123456
 # Password you will type when connecting Claude. Generate with:
 #   openssl rand -hex 32
 MCP_PASSWORD=generate_a_long_random_string
+
+# Optional: Garmin Connect Personal API key (read-only garminGet / garminStatus tools).
+# Garmin Connect Web > Personal API Key. Shown once; expires after the period you pick.
+GARMIN_API_KEY=your_garmin_personal_api_key
