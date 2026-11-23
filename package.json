@@ -34,6 +34,9 @@
       "INTERVALS_ATHLETE_ID": {
         "description": "Your intervals.icu athlete id, the iNNNNNN in your profile URL."
       },
+      "GARMIN_API_KEY": {
+        "description": "Optional. Garmin Connect Personal API key (Garmin Connect Web > Personal API Key). Enables the read-only garminGet and garminStatus tools."
+      },
       "MCP_PASSWORD": {
         "description": "Password you will type when connecting Claude. Generate with: openssl rand -hex 32"
       }
